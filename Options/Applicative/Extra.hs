@@ -1,6 +1,7 @@
 module Options.Applicative.Extra (
   helper,
   execParser,
+  execParser',
   usage
   ) where
 
@@ -21,18 +22,22 @@ helper = nullOption
        & value id
        & hide )
 
-execParser :: ParserInfo a -> IO a
-execParser pinfo = do
-  args <- getArgs
+execParser' :: String -> [String] -> ParserInfo a -> IO a
+execParser' prog args pinfo = do
   let p = infoParser pinfo
   case runParser p args of
     Just (a, []) -> return a
     _ -> do
-      prog <- getProgName
       let pinfo' = pinfo
             { infoHeader = vcat [infoHeader pinfo, usage p prog] }
       hPutStr stderr $ parserHelpText pinfo'
       exitWith (ExitFailure 1)
+
+execParser :: ParserInfo a -> IO a
+execParser pinfo = do
+  prog <- getProgName
+  args <- getArgs
+  execParser' prog args pinfo
 
 usage :: Parser a -> String -> String
 usage p prog = foldr (<+>) ""
