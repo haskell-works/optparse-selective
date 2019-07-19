@@ -30,7 +30,7 @@ data OptDescStyle = OptDescStyle
 
 optDesc :: OptDescStyle -> Option r a -> String
 optDesc style opt =
-  let ns = optionNames $ opt ^. the @"main"
+  let ns = optionNames $ opt ^. the @"main'"
       mv = opt ^. the @"metaVar"
       descs = map showOption (sort ns)
       desc' = intercalate (descSep style) descs <+> mv
@@ -54,7 +54,7 @@ cmdDesc = vcat
         . mapParser desc
   where
     desc opt
-      | CmdReader cmds p <- opt ^. the @"main"
+      | CmdReader cmds p <- opt ^. the @"main'"
       = tabulate [(cmd, d)
                  | cmd <- cmds
                  , d <- maybeToList . fmap infoProgDesc $ p cmd ]

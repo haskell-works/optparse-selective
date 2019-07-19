@@ -114,7 +114,7 @@ command cmd pinfo = fieldMod $ (L.& the @"commands" %~ ((cmd, pinfo):))
 
 baseOpts :: OptReader a -> Option a a
 baseOpts opt = Option
-  { T.main = opt
+  { T.main' = opt
   , T.metaVar = ""
   , T.show = True
   , T.cont = Just . pure

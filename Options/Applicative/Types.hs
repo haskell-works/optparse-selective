@@ -14,6 +14,7 @@ module Options.Applicative.Types
 
 import Control.Applicative
 import Control.Monad
+import Control.Selective
 import GHC.Generics
 
 data ParserInfo a = ParserInfo
@@ -40,7 +41,7 @@ data OptName = OptShort !Char
   deriving (Eq, Ord, Generic)
 
 data Option r a = Option
-  { main    :: OptReader r
+  { main'   :: OptReader r
   , def     :: Maybe a
   , show    :: Bool
   , help    :: String
@@ -71,6 +72,8 @@ instance Applicative Parser where
   NilP f <*> p = fmap f p
   ConsP opt p1 <*> p2 =
     ConsP (fmap uncurry opt) $ (,) <$> p1 <*> p2
+
+instance Selective Parser where
 
 data P a
   = ParseError

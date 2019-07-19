@@ -90,7 +90,7 @@ tryP = maybe ParseError return
 stepParser :: Parser a -> String -> [String] -> P (Parser a, [String])
 stepParser (NilP _) _ _ = ParseError
 stepParser (ConsP opt p) arg args
-  | Just matcher <- optMatches (opt ^. the @"main") arg
+  | Just matcher <- optMatches (opt ^. the @"main'") arg
   = do (r, args') <- matcher args
        liftOpt' <- tryP $ (opt ^. the @"cont") r
        return (liftOpt' <*> p, args')
