@@ -14,6 +14,7 @@ module Options.Applicative.Types
 
 import Control.Applicative
 import Control.Monad
+import Control.Monad.Fail
 import GHC.Generics
 
 data ParserInfo a = ParserInfo
@@ -81,6 +82,8 @@ instance Monad P where
   return = ParseResult
   ParseError >>= _ = ParseError
   ParseResult a >>= f = f a
+
+instance MonadFail P where
   fail _ = ParseError
 
 instance Applicative P where
